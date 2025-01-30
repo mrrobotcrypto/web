@@ -1,0 +1,29 @@
+import React, { useEffect, useState } from "react";
+import { getBridgeTransactions } from "@/utils/api";
+
+const TransactionHistory = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    async function fetchTransactions() {
+      const data = await getBridgeTransactions();
+      setTransactions(data);
+    }
+    fetchTransactions();
+  }, []);
+
+  return (
+    <div className="p-4 border rounded-lg shadow-md">
+      <h2 className="text-lg font-bold mb-2">Transaction History</h2>
+      <ul>
+        {transactions.map((tx, index) => (
+          <li key={index} className="border-b py-2">
+            <span className="font-medium">{tx.amount} ETH</span> → {tx.status}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TransactionHistory;
